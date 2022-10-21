@@ -1,0 +1,7 @@
+{
+  "name": "SatAPI",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
