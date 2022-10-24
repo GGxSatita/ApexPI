@@ -1,0 +1,118 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Agregar Personaje</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="formulario">
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input type="text" formControlName="nombre"></ion-input>
+      <ion-note slot="error" *ngIf="campo('nombre').invalid &&
+                      campo('nombre').errors &&
+                      campo('nombre').errors.required &&
+                      tocado('nombre')
+      ">
+        Este campo es requerido
+      </ion-note>
+
+      <ion-note slot="error" *ngIf="campo('nombre').invalid &&
+                      campo('nombre').errors &&
+                      campo('nombre').errors.maxlength &&
+                      tocado('nombre')
+      ">
+        Excede el máximo de caracateres
+      </ion-note>
+
+      <ion-note slot="error" *ngIf="campo('nombre').invalid &&
+                      campo('nombre').errors &&
+                      campo('nombre').errors.minlength &&
+                      tocado('nombre')
+      ">
+        No se cumple el mínimo de caracateres
+      </ion-note>
+    </ion-item>
+
+    <ion-item>
+        <ion-input (change)="leerArchivo($event)"type="file" formControlName="foto"></ion-input>
+        <ion-note slot="error" *ngIf="campo('foto').invalid &&
+                      campo('foto').errors &&
+                      campo('foto').errors.required &&
+                      tocado('foto')
+      ">
+        Este campo es requerido
+      </ion-note>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Planeta</ion-label>
+        <ion-input type="text" formControlName="planeta"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Habilidades</ion-label>
+        <ion-select formControlName="habilidades" [multiple]="true">
+          <ion-select-option *ngFor=" let habilidad of habilidades"
+          [value]="habilidad"
+          >
+            {{habilidad}}
+          </ion-select-option>
+        </ion-select>
+        <ion-note slot="error" *ngIf="campo('habilidades').invalid &&
+                      campo('habilidades').errors &&
+                      campo('habilidades').errors.required &&
+                      tocado('habilidades')
+      ">
+        Este campo es requerido
+      </ion-note>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Edad</ion-label>
+        <ion-datetime formControlName="edad" presentation="year" min="0000" max="1000"></ion-datetime>
+        <ion-note slot="error" *ngIf="campo('edad').invalid &&
+                      campo('edad').errors &&
+                      campo('edad').errors.required &&
+                      tocado('edad')
+      ">
+        Este campo es requerido
+      </ion-note>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Sexualidad</ion-label>
+        <ion-select formControlName="sexualidad">
+          <ion-select-option *ngFor="let sexuali of sexualidad"
+          [value]="sexuali"
+          >
+            {{sexuali}}
+          </ion-select-option>
+        </ion-select>
+        <ion-note slot="error" *ngIf="campo('sexualidad').invalid &&
+                      campo('sexualidad').errors &&
+                      campo('sexualidad').errors.required &&
+                      tocado('sexualidad')
+      ">
+        Este campo es requerido
+      </ion-note>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-label position="floating">Frase</ion-label>
+        <ion-input type="text" formControlName="frase"></ion-input>
+        <ion-note slot="error" *ngIf="campo('frase').invalid &&
+                      campo('frase').errors &&
+                      campo('frase').errors.required &&
+                      tocado('frase')
+      ">
+        Este campo es requerido
+      </ion-note>
+    </ion-item>
+
+    <ion-item>
+      <ion-button type="submit"> Agregar nuevo</ion-button>
+    </ion-item>
+  </form>
+</ion-content>
