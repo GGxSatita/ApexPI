@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="formulario">
+  <form [formGroup]="formulario" (ngSubmit)="guardarDatos()">
     <ion-item>
       <ion-label position="floating">Nombre</ion-label>
       <ion-input type="text" formControlName="nombre"></ion-input>
@@ -35,7 +35,7 @@
     </ion-item>
 
     <ion-item>
-        <ion-input (change)="leerArchivo($event)"type="file" formControlName="foto"></ion-input>
+        <ion-input [disabled]="cargandoImagen" (change)="leerArchivo($event)"type="file" formControlName="foto"></ion-input>
         <ion-note slot="error" *ngIf="campo('foto').invalid &&
                       campo('foto').errors &&
                       campo('foto').errors.required &&
@@ -51,18 +51,18 @@
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">Habilidades</ion-label>
-        <ion-select formControlName="habilidades" [multiple]="true">
+      <ion-label position="floating">Habilidad</ion-label>
+        <ion-select formControlName="habilidad" [multiple]="true">
           <ion-select-option *ngFor=" let habilidad of habilidades"
           [value]="habilidad"
           >
             {{habilidad}}
           </ion-select-option>
         </ion-select>
-        <ion-note slot="error" *ngIf="campo('habilidades').invalid &&
-                      campo('habilidades').errors &&
-                      campo('habilidades').errors.required &&
-                      tocado('habilidades')
+        <ion-note slot="error" *ngIf="campo('habilidad').invalid &&
+                      campo('habilidad').errors &&
+                      campo('habilidad').errors.required &&
+                      tocado('habilidad')
       ">
         Este campo es requerido
       </ion-note>
@@ -70,14 +70,7 @@
 
     <ion-item>
       <ion-label position="floating">Edad</ion-label>
-        <ion-datetime formControlName="edad" presentation="year" min="0000" max="1000"></ion-datetime>
-        <ion-note slot="error" *ngIf="campo('edad').invalid &&
-                      campo('edad').errors &&
-                      campo('edad').errors.required &&
-                      tocado('edad')
-      ">
-        Este campo es requerido
-      </ion-note>
+        <ion-datetime formControlName="edad" presentation="year" min="0000" max="9999"></ion-datetime>
     </ion-item>
 
     <ion-item>
@@ -112,7 +105,9 @@
     </ion-item>
 
     <ion-item>
-      <ion-button type="submit"> Agregar nuevo</ion-button>
+      <ion-button [disabled]="formulario.invalid && !cargandoImagen" type="submit"> Agregar nuevo personaje</ion-button>
     </ion-item>
+
+
   </form>
 </ion-content>

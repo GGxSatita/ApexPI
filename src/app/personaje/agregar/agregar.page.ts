@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { ApiPersonajeService } from '../services/api-personaje.service';
 
@@ -31,11 +32,14 @@ export class AgregarPage implements OnInit {
     'Heterosexual',
   ]
 
-  public imagenBase : '';
+  public imagenBase = '';
+
+  public cargandoImagen= false;
 
   constructor(
     private fb : FormBuilder,
-    private apiPersonaje : ApiPersonajeService
+    private apiPersonaje : ApiPersonajeService,
+    private router : Router
   ) {
     this.crearFormulario();
    }
@@ -44,10 +48,10 @@ export class AgregarPage implements OnInit {
       nombre: new FormControl('', [Validators.minLength(3), Validators.maxLength(15)]),
       foto : new FormControl('', Validators.required),
       planeta : new FormControl('', [Validators.minLength(3), Validators.maxLength(15)]),
-      habilidades : new FormControl('', Validators.required),
+      habilidad : new FormControl('', Validators.required),
       edad : new FormControl(0, Validators.required),
       frase : new FormControl ('', [Validators.minLength(3), Validators.maxLength(100)]),
-      sexualidad : new FormControl('No especifica', [Validators.required])
+      sexualidad : new FormControl('', [Validators.required])
     })
    }
 
@@ -62,11 +66,30 @@ export class AgregarPage implements OnInit {
   }
 
   public leerArchivo(evento : Event){
+    this.cargandoImagen = true;
     const archivo = (evento.target as HTMLInputElement).files[0];
     const reader = new FileReader();
     reader.readAsDataURL(archivo);
     reader.onload = () => {
-      console.log(reader.result);
+      this.imagenBase = reader.result as string;
+      this.cargandoImagen = false;
     }
+
+  }
+
+  public guardarDatos(){
+    if(this.formulario.invalid && !this.cargandoImagen){
+      this.formulario.markAllAsTouched();
+      return;
+    }
+
+    this.apiPersonaje.agregarPersonaje({
+      ...this.formulario.value,
+      foto: this.imagenBase
+    })
+    .subscribe(data =>{
+      this.router.navigate(['']);
+      alert('Personaje agregado con exito uwu')
+    });
   }
 }
